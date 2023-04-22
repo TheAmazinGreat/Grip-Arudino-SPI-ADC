@@ -1,5 +1,2 @@
 # README
-Read this..
-
-# Read this also
-Blah blah blah
+This functionality is under construction, please do not use. 
