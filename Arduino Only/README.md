@@ -1,4 +1,4 @@
 # README
 This functionality is under construction. 
 # WIRING DIAGRAM/SCHEMATIC
-![](../images/ArduinoOnlyWiringDiagram.jpg)
+![image](../images/ArduinoOnlyWiringDiagram.jpg)
