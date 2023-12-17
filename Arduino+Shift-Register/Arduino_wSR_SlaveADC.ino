@@ -2,7 +2,7 @@
 
 //Arduino code to read analog data and convert the values to 8 bit chunks to be transferred via SPI to be read by
 //the VPForce mainboard. The settings are based on the VPForce Shift Register in series with the Arduino. The arduino
-//MISO pin is connected to the shift register input and the shift register output in connected to the mainboard input.
+//MISO pin is connected to the shift register input and the shift register output is connected to the mainboard input.
 //THIS CODE WILL NOT WORK WITHOUT THE SHIFT REGISTER AND ARDUINO AS A PAIR.
 
 //Based on the WinWing profile in the VPForce configurator which uses the following structure per Walmis:
