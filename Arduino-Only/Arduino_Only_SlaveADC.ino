@@ -1,5 +1,6 @@
 #include <SPI.h>
 
+//Special thanks to user recoilfx for helping to troubleshoot and improve this code.
 //Arduino code to read analog data and convert the values to 8 bit chunks to be transferred via SPI to be read by
 //the VPForce mainboard. The settings are based on using only an Arduino as the ADC and button interface. The arduino
 //MISO pin is connected to the mainboard input. This code can be used up to a maximum of 16 inputs with 4 axes maximum.
@@ -96,7 +97,8 @@ void setup() {
 
   //interrupt routine on pin 2, calls resetCount function on falling edge of SS signal
   //without this call, the analog data doesn't initialize in the proper order
-  attachInterrupt(0, resetCount, FALLING);
+  //RISING has been required for some users, investigation ongoing
+  attachInterrupt(0, resetCount, FALLING); 
     
 
 }
@@ -105,6 +107,7 @@ void setup() {
 void resetCount()
 {
   pullcount = 0; 
+  SPDR = buttonbit1; //byte 1 buttons
 }
 
 // SPI interrupt routine
@@ -113,77 +116,77 @@ ISR (SPI_STC_vect)
 {
 
 
- if (pullcount == 0) // byte 2
+ if (pullcount == 0) // byte 2 buttons
     {
-      SPDR = 255; 
+      SPDR = buttonbit2; 
       pullcount++; 
     }
-    else if (pullcount == 1) //byte 3
+    else if (pullcount == 1) //byte 3 buttons
     {
-      SPDR = buttonbit1;
+      SPDR = 255;
       pullcount++; 
     }
-    else if (pullcount == 2) //byte 4
+    else if (pullcount == 2) //byte 4 buttons
     {
-      SPDR = buttonbit2;
+      SPDR = 255;
       pullcount++;
     }
-    else if (pullcount == 3) //byte 5
+    else if (pullcount == 3) //byte 5 buttons
     {
-      SPDR = 0;
+      SPDR = 255;
       pullcount++; 
     }
-    else if (pullcount == 4) //byte 6
+    else if (pullcount == 4) //byte 6 buttons
     {
       SPDR = 0;
       pullcount++;  
     }
-    else if (pullcount == 5) //byte 7
+    else if (pullcount == 5) //byte 7 buttons
     {
       SPDR = 0;
       pullcount++;  
     }
-    else if (pullcount == 6) //byte 8
+    else if (pullcount == 6) //byte 8 reserved
     {
       SPDR = 0;
       pullcount++;  
     }
-    else if (pullcount == 7) //byte 9
+    else if (pullcount == 7) //byte 9 axis1b
     {
       SPDR = lowerbit1;
       pullcount++;  
     }
-    else if (pullcount == 8) //byte 10
+    else if (pullcount == 8) //byte 10 axis1a
     {
       SPDR = upperbit1;
       pullcount++;  
     }
-    else if (pullcount == 9) //byte 11
+    else if (pullcount == 9) //byte 11 axis2b
     {
       SPDR = lowerbit2;
       pullcount++;  
     }
-    else if (pullcount == 10) //byte 12
+    else if (pullcount == 10) //byte 12 axis2a
     {
       SPDR = upperbit2;
       pullcount++;  
     }
-    else if (pullcount == 11) //byte 13
+    else if (pullcount == 11) //byte 13 axis3b
     {
       SPDR = 0;
       pullcount++;  
     }
-    else if (pullcount == 12) //byte 14
+    else if (pullcount == 12) //byte 14 axis3a
     {
       SPDR = 0;
       pullcount++;  
     }
-    else if (pullcount == 13) //byte 15
+    else if (pullcount == 13) //byte 15 axis4b
     {
       SPDR = 0;
       pullcount++;  
     }
-    else if (pullcount == 14) //byte 16
+    else if (pullcount == 14) //byte 16 axis4a
     {
       SPDR = 0;
       pullcount++;  
